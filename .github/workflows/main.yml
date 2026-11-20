@@ -1,6 +1,6 @@
+
 name: Python Tests
 
-# Қашан тест іске қосылады
 on:
   push:
     branches: [ "master" ]
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. GitHub репозиторийін жүктеу
+      # 1. Репозиторийді жүктеу
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -22,13 +22,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 3. Қажетті кітапханаларды орнату
+      # 3. Pip жаңарту және кітапханаларды орнату
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Тесттерді іске қосу
+      # 4. Pytest орнату (егер requirements ішінде жоқ болса)
+      - name: Install pytest
+        run: pip install pytest
+
+      # 5. Тесттерді іске қосу
       - name: Run tests
-        run: |
-          python -m unittest discover -v
+        run: python -m pytest tests/ -v
